@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Online: Komputer dan Masyarakat</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for question navigation panel */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col text-slate-800">
+
+    <div id="app" class="flex-grow flex flex-col justify-between">
+        
+        <!-- ================= PAGE 1: LOGIN FORM ================= -->
+        <section id="login-page" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950">
+            <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden transform transition duration-500 hover:scale-[1.01]">
+                <div class="p-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-xl"></div>
+                    <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+                    
+                    <div class="inline-flex p-3 bg-white/15 rounded-xl mb-4 backdrop-blur-md">
+                        <i class="fa-solid fa-laptop-code text-3xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-extrabold tracking-tight">Evaluasi Akhir Semester</h1>
+                    <p class="text-blue-100 text-sm mt-1">Mata Kuliah: Komputer & Masyarakat</p>
+                </div>
+                
+                <form id="login-form" class="p-8 space-y-5" onsubmit="handleLogin(event)">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-2">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fa-solid fa-circle-info text-blue-500"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-xs text-blue-800 font-medium">
+                                    Ujian terdiri dari 50 soal pilihan ganda. Durasi pengerjaan adalah 60 menit.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="student-name" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input type="text" id="student-name" required placeholder="Masukkan nama lengkap Anda"
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="student-nim" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Nomor Induk Mahasiswa (NIM)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i class="fa-solid fa-id-card"></i>
+                            </span>
+                            <input type="text" id="student-nim" required placeholder="Contoh: 2201010023"
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="student-class" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Kelas / Kelompok Belajar</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i class="fa-solid fa-users"></i>
+                            </span>
+                            <input type="text" id="student-class" required placeholder="Contoh: IF-4A / TI-2022"
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full mt-2 py-3.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-blue-500/25 hover:shadow-indigo-500/35 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] transition duration-150 flex items-center justify-center gap-2">
+                        Mulai Ujian Sekarang <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: EXAM DASHBOARD ================= -->
+        <section id="exam-page" class="hidden min-h-screen bg-slate-100 flex flex-col">
+            <!-- Header Navigasi -->
+            <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                            <i class="fa-solid fa-laptop-code text-lg"></i>
+                        </span>
+                        <div>
+                            <h2 class="font-bold text-slate-900 leading-tight">Ujian: Komputer & Masyarakat</h2>
+                            <p class="text-xs text-slate-500 hidden sm:block">Harap fokus dan tidak berpindah tab!</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Timer & Tombol Kirim -->
+                    <div class="flex items-center gap-4">
+                        <!-- Timer -->
+                        <div class="flex items-center gap-2 bg-red-50 text-red-700 px-3.5 py-1.5 rounded-xl border border-red-200 font-semibold text-sm">
+                            <i class="fa-regular fa-clock animate-pulse text-base"></i>
+                            <span id="timer-display">60:00</span>
+                        </div>
+                        <!-- Tombol Selesai (Desktop) -->
+                        <button onclick="confirmSubmit()" class="hidden md:inline-flex items-center gap-2 px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-medium text-sm transition shadow-sm">
+                            Selesai Ujian <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Progress Bar Atas -->
+            <div class="w-full bg-slate-200 h-1">
+                <div id="progress-bar-fill" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full w-0 transition-all duration-300"></div>
+            </div>
+
+            <!-- Dashboard Konten -->
+            <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 flex-grow flex flex-col lg:flex-row gap-6">
+                
+                <!-- KIRI: Area Soal & Pilihan Ganda -->
+                <div class="flex-grow flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden min-h-[500px]">
+                    
+                    <!-- Header Soal (Nomor & Kategori) -->
+                    <div class="p-6 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-bold shadow-md shadow-blue-500/10">
+                                Soal <span id="current-question-num">1</span> dari 50
+                            </span>
+                            <span id="question-category" class="text-xs font-semibold px-2.5 py-1 bg-slate-200/80 text-slate-600 rounded-full tracking-wider uppercase">
+                                Kategori
+                            </span>
+                        </div>
+                        <div id="answered-status" class="text-xs text-slate-400 flex items-center gap-1.5 font-medium">
+                            <!-- Diisi via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Isi Soal -->
+                    <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between">
+                        <div class="space-y-6">
+                            <!-- Teks Pertanyaan -->
+                            <h3 id="question-text" class="text-base sm:text-lg font-medium text-slate-900 leading-relaxed">
+                                Memuat Pertanyaan...
+                            </h3>
+
+                            <!-- Pilihan Jawaban -->
+                            <div id="options-container" class="space-y-3.5">
+                                <!-- Diisi secara dinamis oleh Javascript -->
+                            </div>
+                        </div>
+
+                        <!-- Footer Navigasi & Action Soal -->
+                        <div class="pt-8 mt-8 border-t border-slate-100 flex flex-col sm:flex-row gap-3 items-center justify-between">
+                            <div class="flex gap-2 w-full sm:w-auto">
+                                <button onclick="prevQuestion()" id="btn-prev" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-slate-300 text-slate-700 rounded-xl font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition">
+                                    <i class="fa-solid fa-arrow-left text-xs"></i> Sebelumnya
+                                </button>
+                                <button onclick="nextQuestion()" id="btn-next" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-slate-300 text-slate-700 rounded-xl font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition">
+                                    Selanjutnya <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Ragu Ragu Checkbox / Button -->
+                            <button onclick="toggleFlag()" id="btn-flag" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border font-medium transition duration-150">
+                                <i class="fa-regular fa-flag"></i> Ragu-Ragu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KANAN: Panel Navigasi Nomor Soal -->
+                <div class="w-full lg:w-80 flex-shrink-0 flex flex-col gap-6">
+                    <!-- Detail Peserta (Mini Widget) -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3.5">
+                        <h4 class="font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2 text-sm uppercase tracking-wide">
+                            <i class="fa-solid fa-address-card text-blue-500"></i> Informasi Peserta
+                        </h4>
+                        <div class="grid grid-cols-3 gap-y-1.5 text-xs text-slate-600">
+                            <span class="font-medium text-slate-400">Nama:</span>
+                            <span id="widget-name" class="col-span-2 font-semibold text-slate-800">-</span>
+                            <span class="font-medium text-slate-400">NIM:</span>
+                            <span id="widget-nim" class="col-span-2 font-mono text-slate-800 font-semibold">-</span>
+                            <span class="font-medium text-slate-400">Kelas:</span>
+                            <span id="widget-class" class="col-span-2 font-semibold text-slate-800">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Kisi-Kisi Navigasi -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col flex-grow min-h-[380px] lg:max-h-[500px]">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-4">
+                            <h4 class="font-bold text-slate-900 flex items-center gap-2 text-sm uppercase tracking-wide">
+                                <i class="fa-solid fa-grid-horizontal text-blue-500"></i> Lembar Jawaban (LJK)
+                            </h4>
+                            <span id="progress-percentage" class="text-xs bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-md">
+                                0% Terisi
+                            </span>
+                        </div>
+
+                        <!-- Grid Nomor Soal -->
+                        <div id="grid-container" class="grid grid-cols-5 gap-2 overflow-y-auto custom-scrollbar pr-1 flex-grow">
+                            <!-- Diisi secara otomatis oleh JavaScript dari 1 - 50 -->
+                        </div>
+
+                        <!-- Legenda Status -->
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 pt-4 mt-4 border-t border-slate-100 text-[10px] text-slate-500 font-medium">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 bg-emerald-500 rounded-sm"></span> Sudah Dijawab
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 bg-amber-400 rounded-sm"></span> Ragu-Ragu
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 bg-white border border-slate-300 rounded-sm"></span> Belum Dijawab
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 ring-2 ring-blue-500 rounded-sm"></span> Soal Aktif
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Selesai Mobile -->
+                    <button onclick="confirmSubmit()" class="md:hidden w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg shadow-emerald-600/15 transition">
+                        Selesai & Kirim Jawaban <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: RESULT & DISCUSSION PAGE ================= -->
+        <section id="result-page" class="hidden min-h-screen bg-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto space-y-8">
+                
+                <!-- Kotak Utama Skor -->
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-8 text-center relative">
+                        <div class="absolute -right-12 -top-12 w-48 h-48 bg-white/10 rounded-full blur-2xl"></div>
+                        <div class="absolute -left-12 -bottom-12 w-48 h-48 bg-white/10 rounded-full blur-2xl"></div>
+                        
+                        <div class="inline-flex p-3.5 bg-white/15 rounded-full mb-3 backdrop-blur-md">
+                            <i class="fa-solid fa-trophy text-3xl text-amber-300"></i>
+                        </div>
+                        <h2 class="text-2xl font-extrabold">Ujian Selesai!</h2>
+                        <p class="text-blue-100 text-sm mt-1">Hasil evaluasi Anda telah dikalkulasi secara waktu nyata</p>
+                    </div>
+
+                    <!-- Dashboard Skor Detail -->
+                    <div class="p-8 space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Skor Akhir -->
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-center flex flex-col justify-center items-center">
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Skor Akhir</span>
+                                <span id="res-score" class="text-4xl font-black text-blue-600">0</span>
+                                <span class="text-xs text-slate-500 mt-1">Skor Maksimal: 100</span>
+                            </div>
+                            <!-- Benar -->
+                            <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 text-center flex flex-col justify-center items-center">
+                                <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">Benar</span>
+                                <span id="res-correct" class="text-3xl font-bold text-emerald-600">0</span>
+                                <span class="text-xs text-emerald-500 mt-1">Soal Dijawab Tepat</span>
+                            </div>
+                            <!-- Salah -->
+                            <div class="bg-red-50 border border-red-100 rounded-2xl p-5 text-center flex flex-col justify-center items-center">
+                                <span class="text-xs font-semibold text-red-500 uppercase tracking-wider mb-1">Salah</span>
+                                <span id="res-wrong" class="text-3xl font-bold text-red-600">0</span>
+                                <span class="text-xs text-red-400 mt-1">Jawaban Tidak Tepat</span>
+                            </div>
+                            <!-- Kosong -->
+                            <div class="bg-slate-100 border border-slate-200 rounded-2xl p-5 text-center flex flex-col justify-center items-center">
+                                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Kosong</span>
+                                <span id="res-empty" class="text-3xl font-bold text-slate-600">0</span>
+                                <span class="text-xs text-slate-400 mt-1">Tidak Dijawab</span>
+                            </div>
+                        </div>
+
+                        <!-- Biodata Singkat Hasil -->
+                        <div class="bg-slate-50 rounded-2xl border border-slate-200/60 p-5">
+                            <h3 class="font-bold text-slate-800 text-sm border-b border-slate-200 pb-2 mb-3 uppercase tracking-wide">
+                                Data Peserta Ujian
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                                <div><span class="text-slate-400">Nama:</span> <strong id="res-name" class="text-slate-800 ml-1">-</strong></div>
+                                <div><span class="text-slate-400">NIM:</span> <strong id="res-nim" class="font-mono text-slate-800 ml-1">-</strong></div>
+                                <div><span class="text-slate-400">Kelas:</span> <strong id="res-class" class="text-slate-800 ml-1">-</strong></div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Aksi Akhir -->
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="window.print()" class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold shadow-lg shadow-indigo-600/25 transition">
+                                <i class="fa-solid fa-print"></i> Cetak Hasil / Lembar Nilai
+                            </button>
+                            <button onclick="toggleDiscussion()" class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-semibold transition">
+                                <i class="fa-solid fa-file-invoice"></i> <span id="discussion-btn-text">Lihat Pembahasan Lengkap</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian Pembahasan Soal (Dapat Ditutup/Buka) -->
+                <div id="discussion-section" class="hidden space-y-5">
+                    <h3 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-file-circle-check text-blue-600"></i> Pembahasan 50 Soal Komputer & Masyarakat
+                    </h3>
+                    
+                    <div id="discussion-list" class="space-y-4">
+                        <!-- Disisipkan dinamis lewat JavaScript -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= MODALS & POPUPS ================= -->
+        <!-- Modal Konfirmasi Submit -->
+        <div id="confirm-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4 transform transition duration-200">
+                <div class="text-amber-500 text-4xl text-center">
+                    <i class="fa-solid fa-circle-exclamation animate-bounce"></i>
+                </div>
+                <h3 class="text-lg font-bold text-center text-slate-900">Apakah Anda Yakin Ingin Menyelesaikan Ujian?</h3>
+                <p class="text-sm text-slate-500 text-center">
+                    Setelah ujian disubmit, jawaban Anda akan dinilai langsung secara otomatis dan tidak bisa dirubah kembali.
+                </p>
+                <div class="bg-slate-50 p-4 rounded-xl text-xs space-y-1.5 border border-slate-200/60">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Soal Terjawab:</span>
+                        <span id="modal-answered-count" class="font-bold text-slate-800">0 / 50</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Soal Ragu-Ragu:</span>
+                        <span id="modal-flagged-count" class="font-bold text-amber-600">0 / 50</span>
+                    </div>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="closeConfirmModal()" class="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition">
+                        Batal
+                    </button>
+                    <button onclick="submitExam()" class="flex-1 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-600/10 transition">
+                        Ya, Selesai!
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Data Soal & Logika Aplikasi -->
+    <script>
+        // Koleksi 50 Soal "Komputer dan Masyarakat"
+        const questions = [
+            {
+                id: 1,
+                category: "Etika Komputer",
+                question: "Asosiasi profesional pertama yang menyusun 'Ten Commandments of Computer Ethics' (Sepuluh Perintah Etika Komputer) adalah...",
+                options: [
+                    "A. Institute of Electrical and Electronics Engineers (IEEE)",
+                    "B. Association for Computing Machinery (ACM)",
+                    "C. Computer Ethics Institute (CEI)",
+                    "D. International Federation for Information Processing (IFIP)",
+                    "E. American Library Association (ALA)"
+                ],
+                answer: 2, // Indeks C
+                explanation: "Computer Ethics Institute (CEI) merumuskan 10 prinsip etika penggunaan komputer pada tahun 1992 untuk membantu menyelaraskan teknologi dengan moral kemanusiaan."
+            },
+            {
+                id: 2,
+                category: "Hukum & Regulasi",
+                question: "Undang-Undang di Indonesia yang secara khusus mengatur tentang pemanfaatan Teknologi Informasi dan Transaksi Elektronik adalah...",
+                options: [
+                    "A. UU No. 19 Tahun 2002",
+                    "B. UU No. 11 Tahun 2008 (UU ITE)",
+                    "C. UU No. 14 Tahun 2008",
+                    "D. UU No. 28 Tahun 2014",
+                    "E. UU No. 36 Tahun 1999"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Undang-Undang Informasi dan Transaksi Elektronik (UU ITE) pertama kali disahkan pada tahun 2008 sebagai dasar hukum regulasi siber di Indonesia."
+            },
+            {
+                id: 3,
+                category: "Dampak Sosial",
+                question: "Istilah kesenjangan sosial-ekonomi yang terjadi akibat perbedaan akses fisik dan keahlian menggunakan teknologi internet disebut...",
+                options: [
+                    "A. Digital Literacy",
+                    "B. Digital Divide (Kesenjangan Digital)",
+                    "C. Cyber Divide",
+                    "D. Social Inequality",
+                    "E. Information Paradox"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Digital Divide atau kesenjangan digital merujuk pada jurang pemisah antara individu atau wilayah yang memiliki akses memadai ke TIK dengan mereka yang tidak."
+            },
+            {
+                id: 4,
+                category: "Kejahatan Siber",
+                question: "Metode manipulasi psikologis di mana pelaku menyamar sebagai entitas terpercaya untuk mencuri data sensitif seperti password dan nomor kartu kredit disebut...",
+                options: [
+                    "A. DDoS Attack",
+                    "B. Ransomware",
+                    "C. SQL Injection",
+                    "D. Phishing",
+                    "E. Trojan Horse"
+                ],
+                answer: 3, // Indeks D
+                explanation: "Phishing adalah jenis rekayasa sosial (social engineering) untuk mengecoh korban agar memberikan informasi pribadi yang berharga."
+            },
+            {
+                id: 5,
+                category: "Hukum & Regulasi",
+                question: "Hak eksklusif yang diberikan negara kepada inventor (penemu) atas hasil invensinya di bidang teknologi untuk jangka waktu tertentu dinamakan...",
+                options: [
+                    "A. Hak Cipta",
+                    "B. Merek Dagang",
+                    "C. Paten",
+                    "D. Desain Industri",
+                    "E. Hak Rahasia Dagang"
+                ],
+                answer: 2, // Indeks C
+                explanation: "Paten melindungi invensi teknologi baru, sedangkan Hak Cipta melindungi karya seni dan sastra (termasuk kode program)."
+            },
+            {
+                id: 6,
+                category: "Kejahatan Siber",
+                question: "Seorang pelaku peretasan sistem komputer yang menyusup dengan tujuan melakukan sabotase, pencurian data, dan pengrusakan demi keuntungan finansial atau pribadi disebut...",
+                options: [
+                    "A. White Hat Hacker",
+                    "B. Grey Hat Hacker",
+                    "C. Black Hat Hacker (Cracker)",
+                    "D. Script Kiddie",
+                    "E. Cyber Activist"
+                ],
+                answer: 2, // Indeks C
+                explanation: "Black Hat Hacker atau Cracker meretas sistem demi motif jahat, eksploitasi merusak, dan pelanggaran hukum."
+            },
+            {
+                id: 7,
+                category: "Etika Komputer",
+                question: "Manakah yang merupakan salah satu dari 'Sepuluh Perintah Etika Komputer' menurut Computer Ethics Institute?",
+                options: [
+                    "A. Anda boleh menggunakan komputer untuk mematai-matai orang lain jika diperlukan.",
+                    "B. Anda boleh menjiplak perangkat lunak yang dilindungi hak cipta demi kemanusiaan.",
+                    "C. Anda tidak boleh menggunakan komputer untuk merugikan orang lain.",
+                    "D. Anda tidak perlu memikirkan konsekuensi sosial dari program yang Anda tulis.",
+                    "E. Anda boleh mengambil hasil karya intelektual orang lain asal dicantumkan sumbernya secara tersirat."
+                ],
+                answer: 2, // Indeks C
+                explanation: "Aturan pertama CEI secara tegas menyatakan: 'Thou shalt not use a computer to harm other people' (Jangan gunakan komputer untuk merugikan orang lain)."
+            },
+            {
+                id: 8,
+                category: "Dampak Sosial",
+                question: "Fenomena berkurangnya kesempatan kerja manusia akibat digantikan oleh otomatisasi komputer dan robot cerdas disebut...",
+                options: [
+                    "A. Industrialisasi",
+                    "B. Disrupsi Teknologi / Technological Displacement",
+                    "C. Outsourcing digital",
+                    "D. Gig Economy",
+                    "E. Dematerialisasi"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Technological displacement (dislokasi teknologi) adalah hilangnya pekerjaan atau profesi akibat otomatisasi mesin pintar."
+            },
+            {
+                id: 9,
+                category: "Hukum & Regulasi",
+                question: "Sanksi penyebaran berita bohong (hoaks) yang menyebabkan kerugian konsumen secara elektronik menurut UU ITE dapat dikenakan tuntutan...",
+                options: [
+                    "A. Perdata ganti rugi saja",
+                    "B. Pencabutan hak kewarganegaraan",
+                    "C. Pidana penjara dan denda finansial",
+                    "D. Rehabilitasi nama baik",
+                    "E. Tidak ada sanksi yang diatur"
+                ],
+                answer: 2, // Indeks C
+                explanation: "UU ITE menetapkan sanksi pidana berupa penjara (misal Pasal 45A) dan denda yang signifikan bagi pelanggar regulasi konten ilegal."
+            },
+            {
+                id: 10,
+                category: "Privasi & Keamanan",
+                question: "Sebuah file teks berukuran sangat kecil yang disimpan di komputer pengguna oleh web browser untuk merekam riwayat aktivitas dan preferensi penjelajahan situs disebut...",
+                options: [
+                    "A. Cache",
+                    "B. Cookie",
+                    "C. Registry",
+                    "D. Log File",
+                    "E. Meta Tag"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Cookies melacak sesi login, keranjang belanja, serta personalisasi iklan, yang kerap kali menjadi isu privasi bagi pengguna."
+            },
+            {
+                id: 11,
+                category: "Dampak Sosial",
+                question: "Sistem pemerintahan yang memanfaatkan TIK untuk meningkatkan kualitas pelayanan publik, efisiensi kerja, dan transparansi disebut...",
+                options: [
+                    "A. E-Commerce",
+                    "B. E-Education",
+                    "C. E-Government",
+                    "D. Smart City",
+                    "E. Digital Democracy"
+                ],
+                answer: 2, // Indeks C
+                explanation: "E-Government adalah penerapan teknologi digital dalam menyelenggarakan tata kelola pemerintahan publik."
+            },
+            {
+                id: 12,
+                category: "Kejahatan Siber",
+                question: "Jenis malware berbahaya yang mengenkripsi data di komputer korban lalu menuntut tebusan uang agar data tersebut dapat diakses kembali adalah...",
+                options: [
+                    "A. Keylogger",
+                    "B. Spyware",
+                    "C. Ransomware",
+                    "D. Adware",
+                    "E. Rootkit"
+                ],
+                answer: 2, // Indeks C
+                explanation: "Ransomware mengunci akses ke file penting dan meminta tebusan cryptocurrency (misal WannaCry) sebagai ganti kunci dekripsi."
+            },
+            {
+                id: 13,
+                category: "Dampak Sosial",
+                question: "Komunitas yang berinteraksi secara online tanpa batasan ruang fisik melalui platform jejaring sosial demi tujuan sosial, profesional, atau hobi bersama disebut...",
+                options: [
+                    "A. Smart Citizen",
+                    "B. Komunitas Virtual / Virtual Community",
+                    "C. Digital Tribe",
+                    "D. Cyber Group",
+                    "E. Online Association"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Komunitas virtual menghubungkan orang-orang dengan kesamaan minat melalui infrastruktur internet global."
+            },
+            {
+                id: 14,
+                category: "Etika Komputer",
+                question: "Istilah untuk plagiarisme atau penyalinan ilegal karya tulis ilmiah, esai, atau karya sastra di internet yang dipermudah oleh tindakan copy-paste tanpa izin disebut...",
+                options: [
+                    "A. Cyberstalking",
+                    "B. Cyberplagiarism",
+                    "C. Software Piracy",
+                    "D. Libel",
+                    "E. Slander"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Cyberplagiarism merupakan bentuk pencurian kekayaan intelektual digital yang melanggar integritas akademik dan hukum hak cipta."
+            },
+            {
+                id: 15,
+                category: "Kejahatan Siber",
+                question: "Tindakan merundung, mengintimidasi, mempermalukan, atau menyerang karakter seseorang secara online lewat platform digital dikenal dengan istilah...",
+                options: [
+                    "A. Cyberstalking",
+                    "B. Cyberbullying",
+                    "C. Cyberterrorism",
+                    "D. Flaming",
+                    "E. Identity Theft"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Cyberbullying adalah penggunaan teknologi komunikasi untuk merugikan mental, emosional, atau fisik seseorang secara berulang."
+            },
+            {
+                id: 16,
+                category: "Hukum & Regulasi",
+                question: "Jenis lisensi perangkat lunak yang memperbolehkan kode sumbernya (source code) dibuka, diubah, dan didistribusikan ulang oleh siapapun disebut...",
+                options: [
+                    "A. Proprietary Software",
+                    "B. Freeware",
+                    "C. Shareware",
+                    "D. Open Source Software",
+                    "E. Commercial Software"
+                ],
+                answer: 3, // Indeks D
+                explanation: "Open source software membebaskan pengguna untuk meneliti, memodifikasi, dan mengembangkan kode programnya (contoh: Linux, Android)."
+            },
+            {
+                id: 17,
+                category: "Privasi & Keamanan",
+                question: "Konsep hak individu untuk menentukan informasi pribadi apa saja yang boleh dikumpulkan, disimpan, dan disebarkan oleh organisasi atau pihak ketiga disebut...",
+                options: [
+                    "A. Data Sovereignty",
+                    "B. Information Privacy",
+                    "C. Digital Rights Management",
+                    "D. Cybersecurity Protection",
+                    "E. Freedom of Speech"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Information Privacy adalah aspek penting dalam etika komputer yang menjamin hak kendali data pribadi di tangan individu bersangkutan."
+            },
+            {
+                id: 18,
+                category: "Dampak Sosial",
+                question: "Lembaga pendidikan formal yang menawarkan pembelajaran berbasis internet tanpa mengharuskan tatap muka fisik di ruang kelas mengadopsi model...",
+                options: [
+                    "A. Blended Learning",
+                    "B. Distance Learning (Pembelajaran Jarak Jauh / E-Learning)",
+                    "C. MOOCs Only",
+                    "D. Sync Education",
+                    "E. Virtual Schooling"
+                ],
+                answer: 1, // Indeks B
+                explanation: "E-Learning / Distance learning mempermudah fleksibilitas akses pendidikan lintas geografis."
+            },
+            {
+                id: 19,
+                category: "Dampak Sosial",
+                question: "Bagaimanakah internet memicu pergeseran budaya lokal ke arah globalisasi budaya?",
+                options: [
+                    "A. Dengan memblokir akses ke informasi luar negeri",
+                    "B. Dengan mempromosikan produk lokal secara eksklusif",
+                    "C. Melalui difusi gaya hidup, bahasa, dan nilai asing yang tersebar cepat via media sosial",
+                    "D. Dengan melarang penggunaan bahasa daerah",
+                    "E. Tidak ada pengaruh globalisasi dari internet"
+                ],
+                answer: 2, // Indeks C
+                explanation: "Kemudahan berbagi konten global (seperti tren TikTok, K-Pop, gaya barat) mempercepat akulturasi budaya global di masyarakat lokal."
+            },
+            {
+                id: 20,
+                category: "Etika Komputer",
+                question: "Kegiatan membajak software komersial berhak cipta lalu menyebarkannya secara ilegal atau menggunakan crack/patch diatur sebagai pelanggaran etika dan hukum kategori...",
+                options: [
+                    "A. Piracy (Pembajakan)",
+                    "B. Cyber-vandalism",
+                    "C. Espionage",
+                    "D. Data Breach",
+                    "E. Cyber Squatting"
+                ],
+                answer: 0, // Indeks A
+                explanation: "Software piracy merugikan industri developer berhak cipta dan merupakan kejahatan kekayaan intelektual digital."
+            },
+            {
+                id: 21,
+                category: "Kejahatan Siber",
+                question: "Serangan cyber yang bertujuan membanjiri lalu lintas server web dengan traffic palsu dari banyak komputer bot (botnet) sehingga situs web lumpuh disebut...",
+                options: [
+                    "A. Denial of Service (DoS)",
+                    "B. Distributed Denial of Service (DDoS)",
+                    "C. Cross Site Scripting (XSS)",
+                    "D. Man-In-The-Middle (MitM)",
+                    "E. Port Scanning"
+                ],
+                answer: 1, // Indeks B
+                explanation: "DDoS menggunakan puluhan hingga jutaan perangkat komputer yang terinfeksi (Zombies) untuk melumpuhkan server target."
+            },
+            {
+                id: 22,
+                category: "Privasi & Keamanan",
+                question: "Proses mengonversi data polos (plaintext) menjadi kode rahasia yang tidak dapat dibaca (ciphertext) untuk melindungi transmisi informasi sensitif disebut...",
+                options: [
+                    "A. Dekripsi",
+                    "B. Enkripsi",
+                    "C. Kompresi",
+                    "D. Hashing",
+                    "E. Fragmentasi"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Enkripsi adalah teknik dasar keamanan digital yang digunakan dalam protokol aman seperti HTTPS, VPN, dan pesan instan."
+            },
+            {
+                id: 23,
+                category: "Hukum & Regulasi",
+                question: "Regulasi siber di Indonesia melarang penyebaran konten bermuatan melanggar kesusilaan secara elektronik. Aturan ini tercantum pada UU ITE Pasal...",
+                options: [
+                    "A. Pasal 27 ayat 1",
+                    "B. Pasal 28 ayat 2",
+                    "C. Pasal 29",
+                    "D. Pasal 30 ayat 3",
+                    "E. Pasal 40"
+                ],
+                answer: 0, // Indeks A
+                explanation: "Pasal 27 ayat 1 UU ITE melarang penyebaran informasi elektronik yang melanggar nilai kesusilaan/pornografi."
+            },
+            {
+                id: 24,
+                category: "Dampak Sosial",
+                question: "Konsep di mana barang-barang sehari-hari dihubungkan ke internet dan dapat dikontrol atau dipantau secara nirkabel melalui sensor pintar dikenal sebagai...",
+                options: [
+                    "A. Artificial Intelligence (AI)",
+                    "B. Cloud Computing",
+                    "C. Internet of Things (IoT)",
+                    "D. Virtual Reality (VR)",
+                    "E. Big Data"
+                ],
+                answer: 2, // Indeks C
+                explanation: "IoT menghubungkan ekosistem perangkat fisik (lampu, AC, mobil) ke internet agar saling berkomunikasi."
+            },
+            {
+                id: 25,
+                category: "Etika Komputer",
+                question: "Salah satu pilar etika dalam menyusun program komputer agar tidak menimbulkan bias prasangka rasial atau diskriminatif disebut aspek...",
+                options: [
+                    "A. Efisiensi Algoritma",
+                    "B. Keadilan Algoritmik / Algorithmic Fairness",
+                    "C. Skalabilitas Kode",
+                    "D. Desain UI/UX",
+                    "E. Kecepatan Eksekusi"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Fairness dalam kecerdasan buatan dan algoritma memastikan program tidak mengeksploitasi atau mendiskriminasi kelompok tertentu."
+            },
+            {
+                id: 26,
+                category: "Hukum & Regulasi",
+                question: "Perangkat lunak yang gratis diunduh dan digunakan tanpa batas waktu tetapi sering menampilkan iklan pop-up yang mengganggu diklasifikasikan sebagai...",
+                options: [
+                    "A. Adware",
+                    "B. Spyware",
+                    "C. Shareware",
+                    "D. Freeware",
+                    "E. Trialware"
+                ],
+                answer: 0, // Indeks A
+                explanation: "Adware adalah software beriklan (sering gratis) yang mengandalkan iklan sebagai kompensasi pendapatannya."
+            },
+            {
+                id: 27,
+                category: "Kejahatan Siber",
+                question: "Penipuan bermodus penawaran lowongan kerja palsu di media sosial yang meminta uang administrasi di awal termasuk kejahatan siber bermotif...",
+                options: [
+                    "A. Spionase Industri",
+                    "B. Pencurian Identitas",
+                    "C. Rekayasa Sosial & Penipuan Finansial",
+                    "D. Vandalisme Siber",
+                    "E. Carding"
+                ],
+                answer: 2, // Indeks C
+                explanation: "Penipuan ini memanipulasi psikologi korban (social engineering) demi eksploitasi finansial langsung."
+            },
+            {
+                id: 28,
+                category: "Dampak Sosial",
+                question: "Kecenderungan seseorang merasa terisolasi, cemas, atau depresi karena membandingkan dirinya dengan kehidupan orang lain yang tampak sempurna di media sosial dinamakan...",
+                options: [
+                    "A. Digital Nomads",
+                    "B. FOMO (Fear Of Missing Out) & Sindrom Inferioritas",
+                    "C. Cyber-phobia",
+                    "D. Technostress",
+                    "E. Computer Anxiety"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Media sosial dapat memicu kecemasan mental (FOMO) akibat distorsi realitas kehidupan online."
+            },
+            {
+                id: 29,
+                category: "Kejahatan Siber",
+                question: "Tindakan mencuri informasi kartu kredit orang lain lalu menggunakannya untuk berbelanja online secara ilegal disebut...",
+                options: [
+                    "A. Phishing",
+                    "B. Carding",
+                    "C. Cracking",
+                    "D. Piggybacking",
+                    "E. Sniffing"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Carding adalah jenis fraud finansial yang mengincar kredensial kartu kredit milik korban."
+            },
+            {
+                id: 30,
+                category: "Privasi & Keamanan",
+                question: "Sistem keamanan yang menyaring, menyensor, atau mengizinkan paket data masuk/keluar dari suatu jaringan privat lokal ke internet publik disebut...",
+                options: [
+                    "A. Router",
+                    "B. Switch",
+                    "C. Firewall",
+                    "D. Antivirus",
+                    "E. Gateway"
+                ],
+                answer: 2, // Indeks C
+                explanation: "Firewall bertindak sebagai tembok pertahanan yang menyeleksi aktivitas jaringan berdasarkan aturan sekuriti yang ditetapkan."
+            },
+            {
+                id: 31,
+                category: "Dampak Sosial",
+                question: "Istilah untuk menggambarkan pekerja lepas modern yang memanfaatkan internet untuk bekerja dari mana saja tanpa kantor tetap disebut...",
+                options: [
+                    "A. Outsource Worker",
+                    "B. Digital Nomad",
+                    "C. Remote Executive",
+                    "D. Gig Freelancer",
+                    "E. Smart Worker"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Digital Nomad bekerja secara jarak jauh (remote) sambil berpindah-pindah kota atau negara."
+            },
+            {
+                id: 32,
+                category: "Hukum & Regulasi",
+                question: "Di Indonesia, institusi resmi yang berwenang menindak tegas serta memblokir situs web ilegal, pornografi, atau perjudian online adalah...",
+                options: [
+                    "A. Kepolisian RI (Polri)",
+                    "B. Otoritas Jasa Keuangan (OJK)",
+                    "C. Kementerian Komunikasi dan Digital (Kemenkomdigi)",
+                    "D. Badan Siber dan Sandi Negara (BSSN)",
+                    "E. Kejaksaan Agung"
+                ],
+                answer: 2, // Indeks C
+                explanation: "Kementerian Komunikasi dan Digital (Kemenkomdigi / dahulu Kemenkominfo) memiliki kewenangan regulasi konten internet di Indonesia."
+            },
+            {
+                id: 33,
+                category: "Etika Komputer",
+                question: "Aspek etis dari pengembangan AI (Artificial Intelligence) menekankan bahwa sistem kecerdasan buatan harus 'Explainable' (XAI), artinya...",
+                options: [
+                    "A. AI harus sangat cepat melakukan kalkulasi",
+                    "B. Keputusan atau rekomendasi yang dihasilkan oleh AI harus dapat dijelaskan logikanya oleh manusia",
+                    "C. AI harus bisa meniru emosi manusia sepenuhnya",
+                    "D. AI harus dikembangkan tanpa bantuan dana perusahaan besar",
+                    "E. AI harus terus online 24 jam nonstop"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Explainable AI (XAI) memastikan bahwa model kecerdasan buatan transparan dan tidak bersifat 'black box' yang misterius."
+            },
+            {
+                id: 34,
+                category: "Kejahatan Siber",
+                question: "Istilah bagi peretas yang sengaja mencari celah keamanan sistem lalu melaporkannya secara legal ke pemilik perusahaan untuk diperbaiki disebut...",
+                options: [
+                    "A. Script Kiddies",
+                    "B. Black Hat Hacker",
+                    "C. White Hat Hacker (Ethical Hacker)",
+                    "D. Hacktivist",
+                    "E. Cyber Terrorist"
+                ],
+                answer: 2, // Indeks C
+                explanation: "White Hat Hacker bekerja membantu menambal sistem secara etis dan legal."
+            },
+            {
+                id: 35,
+                category: "Dampak Sosial",
+                question: "Konsep yang mewajibkan penyedia jasa layanan internet memperlakukan semua data di internet secara setara tanpa diskriminasi tarif atau kecepatan dikenal sebagai...",
+                options: [
+                    "A. Net Neutrality (Netralitas Net)",
+                    "B. Data Equitability",
+                    "C. Cyber Democracy",
+                    "D. Fair Usage Policy",
+                    "E. Digital Fairness"
+                ],
+                answer: 0, // Indeks A
+                explanation: "Net Neutrality menjamin penyedia internet (ISP) tidak boleh mempercepat, memperlambat, atau memblokir konten tertentu demi keuntungan sepihak."
+            },
+            {
+                id: 36,
+                category: "Privasi & Keamanan",
+                question: "Manakah tindakan pengamanan data pribadi yang paling dianjurkan di era digital saat ini?",
+                options: [
+                    "A. Menggunakan tanggal lahir sebagai password di semua akun agar mudah diingat",
+                    "B. Mengaktifkan Autentikasi Dua Faktor (2FA) di setiap platform penting",
+                    "C. Menyimpan daftar password di notepad ponsel tanpa pengunci layar",
+                    "D. Membagikan foto KTP di media sosial untuk verifikasi akun publik",
+                    "E. Membuka semua link email asing untuk memastikan kebenaran info"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Autentikasi Dua Faktor (2FA) menambahkan lapisan proteksi keamanan berlapis pada akun digital."
+            },
+            {
+                id: 37,
+                category: "Hukum & Regulasi",
+                question: "Hukum di Indonesia yang memayungi keamanan data pribadi warganya dari penyalahgunaan pihak korporat atau instansi asing adalah...",
+                options: [
+                    "A. UU ITE",
+                    "B. UU Perlindungan Data Pribadi (UU PDP No. 27 Tahun 2022)",
+                    "C. UU Hak Cipta",
+                    "D. UU Keterbukaan Informasi Publik",
+                    "E. UU Pers"
+                ],
+                answer: 1, // Indeks B
+                explanation: "UU PDP disahkan pada 2022 khusus untuk meregulasi hak-hak pemrosesan data pribadi oleh korporasi atau badan publik."
+            },
+            {
+                id: 38,
+                category: "Dampak Sosial",
+                question: "Istilah ketergantungan psikologis yang kuat pada teknologi komputer, gawai, dan internet yang mengganggu pola hidup sehat disebut...",
+                options: [
+                    "A. Cyberchondria",
+                    "B. Nomophobia",
+                    "C. Technostress",
+                    "D. Kecanduan Internet (Internet Addiction)",
+                    "E. Digital Overload"
+                ],
+                answer: 3, // Indeks D
+                explanation: "Kecanduan internet memicu gangguan produktivitas, interaksi sosial tatap muka, dan kebiasaan sehari-hari."
+            },
+            {
+                id: 39,
+                category: "Kejahatan Siber",
+                question: "Pencurian identitas digital sering diawali dengan eksploitasi informasi pribadi di media sosial, teknik penipuan ini disebut...",
+                options: [
+                    "A. Spoofing",
+                    "B. Over-sharing / Social Engineering",
+                    "C. SQL Injection",
+                    "D. Carding",
+                    "E. DNS Poisoning"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Berbagi informasi pribadi berlebih (over-sharing) seperti nama ibu kandung atau nomor telepon mempermudah penjahat melakukan rekayasa sosial."
+            },
+            {
+                id: 40,
+                category: "Etika Komputer",
+                question: "Mengapa plagiarisme digital berupa copy-paste mentah-mentah kode buatan orang lain tanpa mencantumkan kredit bertentangan dengan profesionalisme IT?",
+                options: [
+                    "A. Karena menurunkan kecepatan runtime server",
+                    "B. Karena tidak melatih kemampuan problem-solving mandiri dan melanggar integritas intelektual",
+                    "C. Karena program akan rentan terserang virus",
+                    "D. Karena memakan ruang memori RAM",
+                    "E. Karena dilarang keras oleh vendor sistem operasi"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Menjiplak karya intelektual melanggar etika profesionalisme akademik maupun korporat teknologi informasi."
+            },
+            {
+                id: 41,
+                category: "Dampak Sosial",
+                question: "Salah satu indikator kota yang cerdas (Smart City) dalam memanfaatkan teknologi komputer dan sensor pintar adalah...",
+                options: [
+                    "A. Menghilangkan seluruh angkutan umum",
+                    "B. Sistem pengelolaan sampah otomatis dan lampu jalan pintar berbasis sensor gerak",
+                    "C. Kewajiban memiliki gawai bagi seluruh balita",
+                    "D. Membatasi internet hanya untuk kalangan kantor pemerintahan",
+                    "E. Penutupan akses bagi wisatawan asing"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Smart City mengefisiensikan layanan publik kota memanfaatkan Internet of Things dan otomatisasi data real-time."
+            },
+            {
+                id: 42,
+                category: "Hukum & Regulasi",
+                question: "Sebuah perusahaan menjual database alamat email konsumennya ke agen periklanan tanpa izin tertulis. Tindakan ini melanggar asas...",
+                options: [
+                    "A. Transparansi Algoritma",
+                    "B. Persetujuan Pemilik Data (Consent) & Keamanan Data Pribadi",
+                    "C. Hak Kekayaan Intelektual",
+                    "D. Cyber-Espionage",
+                    "E. Rahasia Dagang Korporasi"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Berdasarkan etika dan regulasi privasi modern, pemrosesan data konsumen memerlukan persetujuan eksplisit (consent)."
+            },
+            {
+                id: 43,
+                category: "Kejahatan Siber",
+                question: "Istilah untuk perangkat lunak yang disusupkan secara diam-diam untuk memata-matai pengetikan keyboard (mencuri username dan password) dinamakan...",
+                options: [
+                    "A. Keylogger",
+                    "B. Adware",
+                    "C. Trojan Horse",
+                    "D. Ransomware",
+                    "E. Logic Bomb"
+                ],
+                answer: 0, // Indeks A
+                explanation: "Keylogger merekam setiap ketukan tuts keyboard pengguna demi mendapatkan kredensial akun."
+            },
+            {
+                id: 44,
+                category: "Privasi & Keamanan",
+                question: "Asas keamanan informasi CIA Triad adalah pondasi perlindungan sistem komputer, yang terdiri dari tiga pilar yaitu...",
+                options: [
+                    "A. Computer, Internet, Accessibility",
+                    "B. Confidentiality, Integrity, Availability",
+                    "C. Control, Innovation, Authentication",
+                    "D. Cyber, Information, Attack",
+                    "E. Cryptography, Identity, Authorization"
+                ],
+                answer: 1, // Indeks B
+                explanation: "CIA Triad memfokuskan perlindungan pada kerahasiaan data (Confidentiality), integritas data (Integrity), dan ketersediaan data (Availability)."
+            },
+            {
+                id: 45,
+                category: "Dampak Sosial",
+                question: "Di bawah ini yang merupakan dampak positif dari kemudahan platform urun-dana (Crowdfunding) berbasis komputer bagi masyarakat adalah...",
+                options: [
+                    "A. Memicu kenaikan harga kebutuhan pokok",
+                    "B. Memfasilitasi pengumpulan donasi sosial dan pendanaan proyek inovatif skala kecil secara terbuka",
+                    "C. Menghilangkan fungsi perbankan konvensional",
+                    "D. Membatasi perputaran uang tunai",
+                    "E. Mengurangi pajak negara secara drastis"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Crowdfunding memanfaatkan konektivitas siber untuk mengumpulkan pendanaan mikro kolektif (misal Kitabisa)."
+            },
+            {
+                id: 46,
+                category: "Etika Komputer",
+                question: "Perilaku meretas server sekolah demi mengubah nilai akademis diri sendiri secara ilegal melanggar etika akademik dan aturan siber hukum Indonesia, karena...",
+                options: [
+                    "A. Merusak infrastruktur kelistrikan sekolah",
+                    "B. Melanggar asas kejujuran, melakukan manipulasi data elektronik tanpa hak, dan memalsukan dokumen akademis",
+                    "C. Menurunkan kecepatan bandwidth internet regional",
+                    "D. Tidak melanggar hukum selama tidak ketahuan",
+                    "E. Menyebabkan kerugian finansial kuota internet"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Manipulasi data nilai adalah tindak pidana ilegal akses dan pemalsuan data elektronik yang merusak kepercayaan sistem pendidikan."
+            },
+            {
+                id: 47,
+                category: "Hukum & Regulasi",
+                question: "Asas 'Fair Use' (Penggunaan Wajar) dalam Hak Cipta memungkinkan seseorang menggunakan sebagian kecil karya berhak cipta orang lain di internet tanpa izin, khusus untuk tujuan...",
+                options: [
+                    "A. Dijual kembali demi keuntungan pribadi",
+                    "B. Kritik, ulasan berita, bahan pengajaran akademis, dan penelitian non-komersial",
+                    "C. Diubah nama penciptanya menjadi nama sendiri",
+                    "D. Dijadikan logo utama perusahaan multinasional",
+                    "E. Dipublikasikan ulang secara utuh di web pribadi"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Fair use melindungi penggunaan kritis atau edukatif dari tuduhan pelanggaran hak cipta dalam batas kepatutan."
+            },
+            {
+                id: 48,
+                category: "Dampak Sosial",
+                question: "Fenomena gelembung informasi di mana mesin pencari menyuguhkan hasil penelusuran yang hanya sesuai dengan preferensi atau sudut pandang pribadi pengguna sehingga menutup alternatif opini disebut...",
+                options: [
+                    "A. Algorithm Loop",
+                    "B. Filter Bubble / Echo Chamber",
+                    "C. Search Bias",
+                    "D. Digital Isolation",
+                    "E. Media Bias"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Filter Bubble menjebak pengguna internet dalam persepsi subyektif sejenis karena personalisasi algoritma berlebih."
+            },
+            {
+                id: 49,
+                category: "Hukum & Regulasi",
+                question: "Jenis kejahatan mendaftarkan domain internet menggunakan nama merek terkenal milik pihak lain dengan tujuan menjualnya kembali dengan harga tinggi kepada pemilik merek asli disebut...",
+                options: [
+                    "A. Cyber Squatting",
+                    "B. Domain Hijacking",
+                    "C. Identity Theft",
+                    "D. Brand Spoofing",
+                    "E. Phishing"
+                ],
+                answer: 0, // Indeks A
+                explanation: "Cybersquatting menunggangi nama merek mapan demi keuntungan komersial tidak sah atas hak penamaan domain internet."
+            },
+            {
+                id: 50,
+                category: "Etika Komputer",
+                question: "Berikut adalah tujuan paling mendasar dari mempelajari mata kuliah Komputer dan Masyarakat, yaitu...",
+                options: [
+                    "A. Agar terampil merakit komputer berspesifikasi tinggi",
+                    "B. Agar mampu memahami hubungan timbal balik antara perkembangan teknologi komputer dengan dampak sosial, etika, hukum, serta mampu memanfaatkannya secara bijak bagi kesejahteraan masyarakat",
+                    "C. Agar menguasai teknik pemprograman back-end tingkat lanjut",
+                    "D. Agar bisa meretas jaringan komputer demi perlindungan keamanan nasional pribadi",
+                    "E. Agar dapat memproduksi komponen sirkuit komputer sendiri secara massal"
+                ],
+                answer: 1, // Indeks B
+                explanation: "Mata kuliah Komputer dan Masyarakat mengkaji dampak multidimensi teknologi siber agar melahirkan profesional IT yang humanis, sadar hukum, dan etis."
+            }
+        ];
+
+        let currentUser = { name: '', nim: '', class: '' };
+        let currentQuestionIndex = 0;
+        let userAnswers = Array(questions.length).fill(null); // Menyimpan indeks opsi yang dipilih (0, 1, 2, 3, 4)
+        let flaggedQuestions = Array(questions.length).fill(false); // Status Ragu-ragu (true/false)
+        let timerDuration = 60 * 60; // 60 menit dalam detik
+        let timerInterval = null;
+
+        // Inisialisasi awal saat window dimuat
+        window.onload = function () {
+            // Setup halaman pertama aktif (Login)
+            document.getElementById('login-page').style.display = 'flex';
+            document.getElementById('exam-page').style.display = 'none';
+            document.getElementById('result-page').style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            // Mengambil data form login
+            currentUser.name = document.getElementById('student-name').value.trim();
+            currentUser.nim = document.getElementById('student-nim').value.trim();
+            currentUser.class = document.getElementById('student-class').value.trim();
+
+            if (!currentUser.name || !currentUser.nim || !currentUser.class) {
+                alertModal("Pemberitahuan", "Harap isi semua kolom login dengan lengkap.");
+                return;
+            }
+
+            // Sync ke Widget Profile Ujian
+            document.getElementById('widget-name').innerText = currentUser.name;
+            document.getElementById('widget-nim').innerText = currentUser.nim;
+            document.getElementById('widget-class').innerText = currentUser.class;
+
+            // Sync ke Halaman Hasil
+            document.getElementById('res-name').innerText = currentUser.name;
+            document.getElementById('res-nim').innerText = currentUser.nim;
+            document.getElementById('res-class').innerText = currentUser.class;
+
+            // Transisi ke Halaman Ujian
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('exam-page').style.display = 'flex';
+
+            // Mulai render materi & timer
+            initExam();
+        }
+
+        function initExam() {
+            currentQuestionIndex = 0;
+            userAnswers = Array(questions.length).fill(null);
+            flaggedQuestions = Array(questions.length).fill(false);
+            
+            // Build kisi-kisi navigasi lembar jawaban (LJK)
+            renderLJKGrid();
+            
+            // Render Soal Pertama
+            renderQuestion();
+
+            // Jalankan Timer
+            startTimer();
+        }
+
+        function renderLJKGrid() {
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.innerHTML = '';
+
+            for (let i = 0; i < questions.length; i++) {
+                const btn = document.createElement('button');
+                btn.id = `ljk-btn-${i}`;
+                btn.type = 'button';
+                btn.innerText = i + 1;
+                
+                // Class dasar tombol navigasi LJK
+                btn.className = "w-10 h-10 rounded-xl font-bold text-xs flex items-center justify-center border transition-all duration-150 focus:outline-none";
+                
+                // Menentukan warna tombol berdasarkan state saat ini
+                updateSingleLJKButtonStyle(btn, i);
+
+                // Event click navigasi ke nomor tertentu
+                btn.onclick = () => {
+                    saveAnswerProgress();
+                    currentQuestionIndex = i;
+                    renderQuestion();
+                };
+
+                gridContainer.appendChild(btn);
+            }
+        }
+
+        function updateSingleLJKButtonStyle(btn, index) {
+            const isCurrent = (index === currentQuestionIndex);
+            const isAnswered = (userAnswers[index] !== null);
+            const isFlagged = flaggedQuestions[index];
+
+            // Reset classes
+            btn.className = "w-10 h-10 rounded-xl font-bold text-xs flex items-center justify-center border transition-all duration-200 focus:outline-none ";
+
+            if (isCurrent) {
+                // Sedang aktif dibuka
+                btn.className += "bg-blue-50 border-blue-600 text-blue-600 ring-2 ring-blue-500 ring-offset-1";
+            } else if (isFlagged) {
+                // Ragu-ragu (Warna Kuning/Amber)
+                btn.className += "bg-amber-400 border-amber-500 text-white shadow-sm hover:bg-amber-500";
+            } else if (isAnswered) {
+                // Sudah Terjawab (Hijau Emerald)
+                btn.className += "bg-emerald-500 border-emerald-600 text-white shadow-sm hover:bg-emerald-600";
+            } else {
+                // Belum Terjawab (Abu-abu)
+                btn.className += "bg-white border-slate-200 text-slate-600 hover:bg-slate-50";
+            }
+        }
+
+        function syncGridState() {
+            for (let i = 0; i < questions.length; i++) {
+                const btn = document.getElementById(`ljk-btn-${i}`);
+                if (btn) {
+                    updateSingleLJKButtonStyle(btn, i);
+                }
+            }
+
+            // Hitung Progres Penyelesaian
+            const answeredCount = userAnswers.filter(ans => ans !== null).length;
+            const progressPercent = Math.round((answeredCount / questions.length) * 100);
+            
+            // Update UI Progress Bar
+            document.getElementById('progress-bar-fill').style.width = `${progressPercent}%`;
+            document.getElementById('progress-percentage').innerText = `${progressPercent}% Terisi`;
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            
+            // Info Header Soal
+            document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
+            document.getElementById('question-category').innerText = q.category;
+            
+            // Teks Pertanyaan
+            document.getElementById('question-text').innerText = q.question;
+
+            // Status Jawaban Saat Ini
+            const answeredStatusDiv = document.getElementById('answered-status');
+            if (userAnswers[currentQuestionIndex] !== null) {
+                answeredStatusDiv.innerHTML = `<span class="text-emerald-600 flex items-center gap-1 font-semibold"><i class="fa-solid fa-circle-check"></i> Sudah dijawab</span>`;
+            } else {
+                answeredStatusDiv.innerHTML = `<span class="text-slate-400 flex items-center gap-1"><i class="fa-regular fa-circle"></i> Belum dijawab</span>`;
+            }
+
+            // Merender Pilihan Jawaban (Radio Buttons)
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = (userAnswers[currentQuestionIndex] === idx);
+                
+                // Div pembungkus opsi
+                const label = document.createElement('label');
+                label.className = `flex items-start gap-3.5 p-4 border rounded-xl cursor-pointer transition duration-150 select-none ${
+                    isSelected 
+                    ? 'border-blue-500 bg-blue-50/50 hover:bg-blue-50' 
+                    : 'border-slate-200 hover:bg-slate-50'
+                }`;
+
+                // Input radio tersembunyi
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `option-group-${currentQuestionIndex}`;
+                radio.className = "hidden";
+                radio.checked = isSelected;
+                radio.onchange = () => selectOption(idx);
+
+                // Kustom visual radio circle
+                const customRadioCircle = document.createElement('div');
+                customRadioCircle.className = `flex-shrink-0 w-5 h-5 rounded-full border flex items-center justify-center mt-0.5 transition ${
+                    isSelected 
+                    ? 'border-blue-500 bg-blue-500 text-white' 
+                    : 'border-slate-300 bg-white'
+                }`;
+                if (isSelected) {
+                    customRadioCircle.innerHTML = '<div class="w-2 h-2 bg-white rounded-full"></div>';
+                }
+
+                // Teks Opsi Jawaban
+                const optText = document.createElement('span');
+                optText.className = `text-sm leading-normal ${isSelected ? 'font-semibold text-slate-900' : 'text-slate-700'}`;
+                optText.innerText = opt;
+
+                // Satukan element
+                label.appendChild(radio);
+                label.appendChild(customRadioCircle);
+                label.appendChild(optText);
+                optionsContainer.appendChild(label);
+            });
+
+            // Update State Tombol Ragu-Ragu
+            const btnFlag = document.getElementById('btn-flag');
+            const isFlagged = flaggedQuestions[currentQuestionIndex];
+            if (isFlagged) {
+                btnFlag.className = "w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-amber-500 bg-amber-400 text-white hover:bg-amber-500 font-medium transition duration-150";
+                btnFlag.innerHTML = `<i class="fa-solid fa-flag"></i> Ragu-Ragu (Aktif)`;
+            } else {
+                btnFlag.className = "w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 font-medium transition duration-150";
+                btnFlag.innerHTML = `<i class="fa-regular fa-flag"></i> Ragu-Ragu`;
+            }
+
+            // Atur Disabled Tombol navigasi footer
+            document.getElementById('btn-prev').disabled = (currentQuestionIndex === 0);
+            document.getElementById('btn-next').disabled = (currentQuestionIndex === questions.length - 1);
+
+            // Perbarui LJK
+            syncGridState();
+        }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            renderQuestion();
+        }
+
+        function toggleFlag() {
+            flaggedQuestions[currentQuestionIndex] = !flaggedQuestions[currentQuestionIndex];
+            renderQuestion();
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                saveAnswerProgress();
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                saveAnswerProgress();
+                currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        function saveAnswerProgress() {
+            // Tempat penampungan penyimpanan lokal sementera jika dibutuhkan di luar memori (default: in-memory state)
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timerDuration--;
+                
+                const minutes = Math.floor(timerDuration / 60);
+                const seconds = timerDuration % 60;
+                
+                const formattedMinutes = String(minutes).padStart(2, '0');
+                const formattedSeconds = String(seconds).padStart(2, '0');
+                
+                const timerDisplay = document.getElementById('timer-display');
+                timerDisplay.innerText = `${formattedMinutes}:${formattedSeconds}`;
+
+                // Peringatan sisa waktu 5 menit (berwarna merah berkedip kencang)
+                if (timerDuration <= 300) {
+                    timerDisplay.parentElement.className = "flex items-center gap-2 bg-red-100 text-red-600 px-3.5 py-1.5 rounded-xl border-2 border-red-500 font-extrabold text-sm animate-pulse";
+                }
+
+                // Waktu Habis -> Auto Submit
+                if (timerDuration <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmitExam();
+                }
+            }, 1000);
+        }
+
+        function confirmSubmit() {
+            const answeredCount = userAnswers.filter(ans => ans !== null).length;
+            const flaggedCount = flaggedQuestions.filter(f => f).length;
+
+            document.getElementById('modal-answered-count').innerText = `${answeredCount} / 50 Soal`;
+            document.getElementById('modal-flagged-count').innerText = `${flaggedCount} / 50 Soal`;
+
+            // Tampilkan Modal
+            document.getElementById('confirm-modal').style.display = 'flex';
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').style.display = 'none';
+        }
+
+        function autoSubmitExam() {
+            // Menghindari modal bertumpuk
+            closeConfirmModal();
+            
+            // Custom modal info auto submit
+            const autoSubmitModal = document.createElement('div');
+            autoSubmitModal.className = "fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4";
+            autoSubmitModal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center space-y-4">
+                    <div class="text-red-500 text-5xl">
+                        <i class="fa-solid fa-hourglass-end animate-spin"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">Waktu Anda Telah Habis!</h3>
+                    <p class="text-sm text-slate-500">Sistem otomatis merekam dan mengirimkan seluruh jawaban Anda yang telah tersimpan.</p>
+                </div>
+            `;
+            document.body.appendChild(autoSubmitModal);
+
+            setTimeout(() => {
+                autoSubmitModal.remove();
+                submitExam();
+            }, 3500);
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            closeConfirmModal();
+
+            // Sembunyikan Halaman Dashboard
+            document.getElementById('exam-page').style.display = 'none';
+            // Tampilkan Halaman Hasil
+            document.getElementById('result-page').style.display = 'block';
+
+            // Hitung Statistik Hasil
+            let correct = 0;
+            let wrong = 0;
+            let empty = 0;
+
+            questions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                if (userAns === null) {
+                    empty++;
+                } else if (userAns === q.answer) {
+                    correct++;
+                } else {
+                    wrong++;
+                }
+            });
+
+            // Kalkulasi Skor Akhir (Skala 100)
+            const finalScore = Math.round((correct / questions.length) * 100);
+
+            // Tampilkan Skor ke Elemen UI
+            document.getElementById('res-score').innerText = finalScore;
+            document.getElementById('res-correct').innerText = correct;
+            document.getElementById('res-wrong').innerText = wrong;
+            document.getElementById('res-empty').innerText = empty;
+
+            // Generate Lembar Pembahasan 50 Soal
+            generateDiscussion();
+        }
+
+        function toggleDiscussion() {
+            const discSection = document.getElementById('discussion-section');
+            const btnText = document.getElementById('discussion-btn-text');
+
+            if (discSection.classList.contains('hidden')) {
+                discSection.classList.remove('hidden');
+                btnText.innerText = "Tutup Pembahasan Soal";
+                // Scroll halus ke bawah area pembahasan
+                discSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                discSection.classList.add('hidden');
+                btnText.innerText = "Lihat Pembahasan Lengkap";
+            }
+        }
+
+        function generateDiscussion() {
+            const discListContainer = document.getElementById('discussion-list');
+            discListContainer.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = (userAns === q.answer);
+                const isUnanswered = (userAns === null);
+
+                // Template Item Pembahasan
+                const discItem = document.createElement('div');
+                discItem.className = `p-6 rounded-2xl border ${
+                    isCorrect 
+                    ? 'bg-emerald-50/40 border-emerald-200' 
+                    : isUnanswered 
+                      ? 'bg-slate-50 border-slate-200' 
+                      : 'bg-red-50/40 border-red-200'
+                } space-y-4`;
+
+                // Header status pembahasan per-soal
+                let statusHeader = "";
+                if (isCorrect) {
+                    statusHeader = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800"><i class="fa-solid fa-check"></i> BENAR</span>`;
+                } else if (isUnanswered) {
+                    statusHeader = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-200 text-slate-700"><i class="fa-regular fa-circle-question"></i> TIDAK DIJAWAB</span>`;
+                } else {
+                    statusHeader = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-red-100 text-red-800"><i class="fa-solid fa-xmark"></i> SALAH</span>`;
+                }
+
+                discItem.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-dashed ${
+                        isCorrect ? 'border-emerald-200' : isUnanswered ? 'border-slate-200' : 'border-red-200'
+                    }">
+                        <span class="text-sm font-bold text-slate-900">Soal ${idx + 1} (${q.category})</span>
+                        ${statusHeader}
+                    </div>
+                    
+                    <p class="text-sm font-medium text-slate-800 leading-relaxed">${q.question}</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3 rounded-xl bg-white border border-slate-100">
+                            <span class="block text-slate-400 font-semibold mb-1">Jawaban Anda:</span>
+                            <span class="font-medium ${isCorrect ? 'text-emerald-600' : isUnanswered ? 'text-slate-500' : 'text-red-600'}">
+                                ${isUnanswered ? 'Tidak Dijawab' : q.options[userAns]}
+                            </span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-white border border-slate-100">
+                            <span class="block text-slate-400 font-semibold mb-1">Jawaban Benar:</span>
+                            <span class="font-semibold text-emerald-600">
+                                ${q.options[q.answer]}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50/60 rounded-xl p-4 border border-blue-100">
+                        <span class="block text-xs font-bold text-blue-800 uppercase tracking-wider mb-1"><i class="fa-solid fa-circle-info"></i> Pembahasan Analitis:</span>
+                        <p class="text-xs text-blue-950 leading-relaxed">${q.explanation}</p>
+                    </div>
+                `;
+
+                discListContainer.appendChild(discItem);
+            });
+        }
+
+        function alertModal(title, text) {
+            const tempModal = document.createElement('div');
+            tempModal.className = "fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in";
+            tempModal.innerHTML = `
+                <div class="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation text-blue-500"></i> ${title}
+                    </h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">${text}</p>
+                    <button onclick="this.closest('.fixed').remove()" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition">
+                        Mengerti
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(tempModal);
+        }
+
+    </script>
+</body>
+</html>
